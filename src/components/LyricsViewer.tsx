@@ -12,7 +12,7 @@ interface LyricLine {
   pronunciation: string;
 }
 
-const sampleLyrics: LyricLine[] = [
+const defaultLyrics: LyricLine[] = [
   { time: 0, text: "In the silence of the night", translation: "रात की खामोशी में", pronunciation: "in thə ˈsaɪləns əv ðə naɪt" },
   { time: 3, text: "When the stars shine bright", translation: "जब तारे चमकते हैं", pronunciation: "wɛn ðə stɑrz ʃaɪn braɪt" },
   { time: 6, text: "I hear your voice calling", translation: "मैं तुम्हारी आवाज़ सुनता हूँ", pronunciation: "aɪ hɪr jʊr vɔɪs ˈkɔlɪŋ" },
@@ -21,7 +21,23 @@ const sampleLyrics: LyricLine[] = [
   { time: 15, text: "Lost in harmony", translation: "सामंजस्य में खोया हुआ", pronunciation: "lɔst ɪn ˈhɑrməni" },
 ];
 
-const LyricsViewer = () => {
+interface LyricsViewerProps {
+  customLyrics?: string;
+}
+
+const LyricsViewer = ({ customLyrics }: LyricsViewerProps) => {
+  // Parse custom lyrics if provided
+  const parseLyrics = (text: string): LyricLine[] => {
+    const lines = text.split('\n').filter(line => line.trim());
+    return lines.map((line, index) => ({
+      time: index * 3,
+      text: line.trim(),
+      translation: "",
+      pronunciation: ""
+    }));
+  };
+
+  const sampleLyrics = customLyrics ? parseLyrics(customLyrics) : defaultLyrics;
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState([80]);
