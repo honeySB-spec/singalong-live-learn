@@ -2,6 +2,7 @@ import { useState } from "react";
 import Hero from "@/components/Hero";
 import LyricsInput from "@/components/LyricsInput";
 import LyricsViewer from "@/components/LyricsViewer";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type ViewState = "hero" | "input" | "learning";
 
@@ -22,15 +23,17 @@ const Index = () => {
     setCurrentView("hero");
   };
 
-  if (currentView === "learning") {
-    return <LyricsViewer customLyrics={userLyrics} />;
-  }
-
-  if (currentView === "input") {
-    return <LyricsInput onSubmit={handleLyricsSubmit} onBack={handleBack} />;
-  }
-
-  return <Hero onStartLearning={handleStartLearning} />;
+  return (
+    <div className="relative min-h-screen">
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+      
+      {currentView === "learning" && <LyricsViewer customLyrics={userLyrics} />}
+      {currentView === "input" && <LyricsInput onSubmit={handleLyricsSubmit} onBack={handleBack} />}
+      {currentView === "hero" && <Hero onStartLearning={handleStartLearning} />}
+    </div>
+  );
 };
 
 export default Index;
