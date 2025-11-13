@@ -70,7 +70,7 @@ export const SongUpload = ({ onSuccess, onCancel, initialLyrics = "" }: SongUplo
 
       // Insert song into database
       const { data: song, error: insertError } = await supabase
-        .from("songs")
+        .from("songs" as any)
         .insert({
           user_id: user.id,
           title,
@@ -84,6 +84,7 @@ export const SongUpload = ({ onSuccess, onCancel, initialLyrics = "" }: SongUplo
         .single();
 
       if (insertError) throw insertError;
+      if (!song) throw new Error("Failed to create song");
 
       toast.success("Song saved successfully!");
       onSuccess(song.id);

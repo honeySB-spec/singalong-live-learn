@@ -33,7 +33,7 @@ export const SongLibrary = ({ onNewSong, onViewSong, onSignOut }: SongLibraryPro
   const fetchSongs = async () => {
     try {
       const { data, error } = await supabase
-        .from("songs")
+        .from("songs" as any)
         .select("*")
         .order("created_at", { ascending: false });
 
@@ -57,7 +57,7 @@ export const SongLibrary = ({ onNewSong, onViewSong, onSignOut }: SongLibraryPro
       }
 
       // Delete song from database
-      const { error } = await supabase.from("songs").delete().eq("id", id);
+      const { error } = await supabase.from("songs" as any).delete().eq("id", id);
       if (error) throw error;
 
       setSongs(songs.filter((s) => s.id !== id));
